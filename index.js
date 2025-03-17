@@ -14,6 +14,7 @@ mongoose
   .catch((e) => console.log("Database error", e.toString()));
 
 app.use(express.json());
+app.use("/assets", express.static("public"));
 app.use(morgan("tiny"));
 
 app.use("/", indexRouter);
