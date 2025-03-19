@@ -13,8 +13,8 @@ const signJWT = (data) =>
     { expiresIn: process.env.JWT_DURATION }
   );
 
-const verifyJWT = () => {};
+const verifyJWT = (token) => JWT.verify(token, process.env.JWT_SECRET);
 
 const generateRandomToken = () => uuidv4();
 
-module.exports = { generateOTP, generateRandomToken, signJWT };
+module.exports = { generateOTP, generateRandomToken, signJWT, verifyJWT };
