@@ -16,6 +16,7 @@ const secureAPI =
         const { roles: userRoles } = user;
         const isValidRole = userRoles.some((role) => roles.includes(role));
         if (!isValidRole) throw new Error("Access denied");
+        req.currentUser = user?._id;
         next();
       }
     } catch (e) {

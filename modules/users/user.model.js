@@ -10,6 +10,7 @@ const userSchema = new Schema(
     otp: { type: String },
     refresh_token: { code: { type: String }, duration: { type: Date } },
     roles: { type: [String], enum: ["admin", "user"], default: "user" },
+    picture: { type: String },
   },
   { timestamps: true }
 );
