@@ -1,5 +1,6 @@
 require("dotenv").config();
 const express = require("express");
+const helmet = require("helmet");
 const mongoose = require("mongoose");
 const morgan = require("morgan");
 
@@ -13,6 +14,7 @@ mongoose
   .then(console.log("Database connected"))
   .catch((e) => console.log("Database error", e.toString()));
 
+app.use(helmet());
 app.use(express.json());
 app.use("/assets", express.static("public"));
 app.use(morgan("tiny"));

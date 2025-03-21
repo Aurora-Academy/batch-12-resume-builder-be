@@ -1,6 +1,11 @@
 const router = require("express").Router();
+const { storage, upload } = require("../../utils/multer");
+
 const userController = require("./user.controller");
 const { secureAPI } = require("../../utils/secure");
+const { userValidationMw } = require("./user.validation");
+
+const newUpload = upload(storage());
 
 router.post("/login", async (req, res, next) => {
   try {
@@ -11,8 +16,11 @@ router.post("/login", async (req, res, next) => {
   }
 });
 
-router.post("/register", async (req, res, next) => {
+router.post("/register", newUpload.single("picture"), userValidationMw, async (req, res, next) => {
   try {
+    if (req.file) {
+      req.body.picture = req.file.path.replace("public", "");
+    }
     await userController.register(req.body);
     res.json({ data: "User registered successfully" });
   } catch (e) {
@@ -118,7 +126,8 @@ router.get("/", secureAPI(["admin"]), async (req, res, next) => {
 
 router.post("/", secureAPI(["admin"]), async (req, res, next) => {
   try {
-    res.json({ data: "I am admin route, and I need atleast access token to access" });
+    const result = await userController.addUser(req.body);
+    res.json(result);
   } catch (e) {
     next(e);
   }
@@ -126,7 +135,8 @@ router.post("/", secureAPI(["admin"]), async (req, res, next) => {
 
 router.get("/:id", secureAPI(["admin"]), async (req, res, next) => {
   try {
-    res.json({ data: "I am admin route, and I need atleast access token to access" });
+    const data = await userController.getById(req.params.id);
+    res.json({ data });
   } catch (e) {
     next(e);
   }
@@ -134,7 +144,8 @@ router.get("/:id", secureAPI(["admin"]), async (req, res, next) => {
 
 router.put("/:id", secureAPI(["admin"]), async (req, res, next) => {
   try {
-    res.json({ data: "I am admin route, and I need atleast access token to access" });
+    const data = await userController.updateUser(req.params.id, req.body);
+    res.json({ data });
   } catch (e) {
     next(e);
   }
@@ -142,7 +153,8 @@ router.put("/:id", secureAPI(["admin"]), async (req, res, next) => {
 
 router.patch("/:id/block", secureAPI(["admin"]), async (req, res, next) => {
   try {
-    res.json({ data: "I am admin route, and I need admin role access token to access" });
+    const data = await userController.blockUser(req.params.id);
+    res.json({ data });
   } catch (e) {
     next(e);
   }
