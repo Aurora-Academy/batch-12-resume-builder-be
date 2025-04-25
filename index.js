@@ -1,4 +1,5 @@
 require("dotenv").config();
+const cors = require("cors");
 const express = require("express");
 const helmet = require("helmet");
 const mongoose = require("mongoose");
@@ -14,6 +15,7 @@ mongoose
   .then(console.log("Database connected"))
   .catch((e) => console.log("Database error", e.toString()));
 
+app.use(cors());
 app.use(helmet());
 app.use(express.json());
 app.use("/assets", express.static("public"));

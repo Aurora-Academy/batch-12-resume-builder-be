@@ -13,19 +13,23 @@ const transporter = nodemailer.createTransport({
 
 transporter.verify(function (error, success) {
   if (error) {
-    console.log(error);
+    console.log(error.toString());
   } else {
     console.log("Email Server is ready to take our messages");
   }
 });
 
 const sendEmail = async ({ to, subject, message }) => {
-  return await transporter.sendMail({
-    from: `"ProResumeAI" <no-reply@proresume.ai>`,
-    to,
-    subject,
-    html: message,
-  });
+  try {
+    return await transporter.sendMail({
+      from: `"ProResumeAI" <no-reply@proresume.ai>`,
+      to,
+      subject,
+      html: message,
+    });
+  } catch (e) {
+    console.log("sendEmail err");
+  }
 };
 
 mailEvents.on("sendEmail", async (to, subject, message) => {
