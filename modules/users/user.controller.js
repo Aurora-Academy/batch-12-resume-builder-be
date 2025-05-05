@@ -186,7 +186,7 @@ const refreshToken = async (payload) => {
     name: user?.name,
     email: user?.email,
   };
-  return { access_token: signJWT(data) };
+  return { access_token: signJWT(data), refresh_token };
 };
 
 const fpTokenGeneration = async ({ email }) => {
