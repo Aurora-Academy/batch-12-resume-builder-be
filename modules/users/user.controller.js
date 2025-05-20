@@ -300,6 +300,10 @@ const blockUser = async (id) => {
   }
 };
 
+const getUserReport = async () => {
+  return userModel.find().select("-password -refresh_token -otp");
+};
+
 module.exports = {
   addUser,
   blockUser,
@@ -308,6 +312,7 @@ module.exports = {
   fpTokenVerification,
   getById,
   getProfile,
+  getUserReport,
   list,
   login,
   refreshToken,

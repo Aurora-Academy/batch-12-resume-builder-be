@@ -124,6 +124,15 @@ router.get("/", secureAPI(["admin"]), async (req, res, next) => {
   }
 });
 
+router.get("/report", secureAPI(["admin"]), async (req, res, next) => {
+  try {
+    const result = await userController.getUserReport();
+    res.json(result);
+  } catch (e) {
+    next(e);
+  }
+});
+
 router.post("/", secureAPI(["admin"]), async (req, res, next) => {
   try {
     const result = await userController.addUser(req.body);
