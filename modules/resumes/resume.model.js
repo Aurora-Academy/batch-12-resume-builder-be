@@ -6,14 +6,16 @@ const schema = new Schema(
     title: { type: String, required: true },
     user: { type: ObjectId, required: true },
     personalInfo: {
+      fullName: { type: String },
+      email: { type: String },
+      phone: { type: String },
+      summary: {
+        type: String,
+      },
       github: { type: String },
       linkedin: { type: String },
-      phone: { type: String },
       address: { type: String },
       website: { type: String },
-    },
-    summary: {
-      type: String,
     },
     education: [
       {

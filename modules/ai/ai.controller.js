@@ -1,40 +1,22 @@
 const openai = require("../../utils/openai");
-const { z } = require("zod");
+const { systemPrompt } = require("./ai.prompt");
 
-const RewrittenTextSchema = z.object({
-  data: z.string(),
-});
-
-const generateText = async ({ userText }) => {
+const generateText = async ({ query }) => {
   try {
     const completion = await openai.chat.completions.create({
-      model: "deepseek/deepseek-chat-v3-0324:free",
+      model: process.env.AI_MODEL,
       messages: [
-        {
-          role: "system",
-          content: `As a professional resume writer, your task is to rewrite the user's text into a polished, fluent and professional
-           resume experience description in a single paragraph. Focus on key responsibilities and achievements, ensuring clarity and conciseness. 
-             Return ONLY the rewritten paragraph, without any additional commentary or formatting.`,
-        },
+        systemPrompt,
         {
           role: "user",
-          content: userText,
+          content: query,
         },
       ],
     });
-    const rawRewrittenText = completion.choices[0]?.message?.content;
-    const parsedResult = RewrittenTextSchema.safeParse({
-      data: rawRewrittenText.trim(),
-    });
-    console.log("Parsed Result:", completion.choices[0]?.message?.content);
-    if (parsedResult.success) {
-      console.log("Parsed Result:", parsedResult.data);
-      return parsedResult.data;
-    } else {
-      throw new Error("Invalid response from OpenAI");
-    }
+    return completion.choices[0].message;
   } catch (e) {
-    next(e);
+    console.log({ e });
+    throw new Error(e);
   }
 };
 
