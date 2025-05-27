@@ -106,7 +106,6 @@ const login = async (payload) => {
   };
   const rt = generateRandomToken();
   const rt_duration = generateRTDuration();
-  console.log({ rt_duration });
   await userModel.updateOne(
     { email: user?.email },
     {
