@@ -57,6 +57,8 @@ const schema = new Schema(
         date: Date,
       },
     ],
+    status: { type: String, required: true, enum: ["draft", "final"], default: "draft" },
+    template: { type: String, required: true },
   },
   { timestamps: true }
 );
