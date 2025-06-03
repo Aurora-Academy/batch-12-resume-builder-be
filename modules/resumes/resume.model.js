@@ -26,7 +26,7 @@ const schema = new Schema(
         course: { type: String },
       },
     ],
-    experience: [
+    experiences: [
       {
         company: { type: String },
         position: { type: String },
